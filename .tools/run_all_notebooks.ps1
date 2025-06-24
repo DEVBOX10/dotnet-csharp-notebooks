@@ -14,10 +14,26 @@ Set-Location $rootPath
 # $notebooks = git diff --name-only $mainBranch | Where-Object { $_ -like "*.ipynb" }
 $notebooks = Get-ChildItem -Path $rootPath -Recurse -Include *.ipynb | Where-Object { $_.FullName -notlike "*output*" }
 
-# skip notebooks that are known to fail
+# skip notebooks that are known to fail or require external network access
 $notebooks_to_skip = @(
     "14-Methods and Members.ipynb",
-    "02-Code Cells.ipynb"
+    "02-Code Cells.ipynb",
+    # Machine learning notebooks require NuGet package downloads which can hang in CI
+    "01-Intro to Machine Learning.ipynb",
+    "02-Data Preparation and Feature Engineering.ipynb",
+    "03-Training and AutoML.ipynb",
+    "04-Model Evaluation.ipynb",
+    "05 - AutoML Sweepable API.ipynb",
+    "06-AutoML HPO and tuner.ipynb",
+    "E2E-Classification with Iris Dataset.ipynb",
+    "E2E-Forecasting using Autoregressive with Luna Dataset.ipynb",
+    "E2E-Forecasting using SSA with Luna Dataset.ipynb",
+    "E2E-Regression with Taxi Dataset.ipynb",
+    "E2E-Text-Classification-API-with-Yelp-Dataset.ipynb",
+    "Parameter and SearchSpace.ipynb",
+    "REF-Data Processing with DataFrame.ipynb",
+    "REF-Graphs and Visualizations.ipynb",
+    "REF-Kaggle with Titanic Dataset.ipynb"
 )
 
 $notebooks = $notebooks | Where-Object { $notebooks_to_skip -notcontains $_.Name }
